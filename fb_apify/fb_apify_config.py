@@ -13,7 +13,7 @@ class ApifyConfig(BaseSettings):
     FACEBOOK_PAGE_ACTOR: str = ""
 
     DEFAULT_MAX_POSTS:int = 10
-    DEFAULT_RESULTS_LIMIT:int = 1
+    DEFAULT_RESULTS_LIMIT:int = 10
 
     model_config = SettingsConfigDict(
         env_file=Path(__file__).resolve().parents[1] / ".env",
