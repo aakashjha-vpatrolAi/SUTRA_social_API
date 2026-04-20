@@ -500,10 +500,7 @@ https://rapidapi.com/krasnoludkolo/api/facebook-scraper3/playground/apiendpoint_
 ---
 ## Apify
 Visit `https://console.apify.com/actors` and search by actor id:
----
 1) fetch_facebook_profile : `4Hv5RhChiaDk6iwad`
-
----
 2) get_facebook_profile_id : `4Hv5RhChiaDk6iwad`
 3) get_all_facebook_posts : `KoJrdxJCTtpon81KY`
 4) get_post_comments : `us5srxAYnsrkgUv2v`
@@ -520,3 +517,303 @@ Notes:
 - Only public data is accessible
 - Followers list / large data may be unavailable or difficult to access
 - link's are temporary
+
+---
+
+## FB Apify (Apify) APIs
+
+Notes:
+- These endpoints use **Apify** via `fb_apify/` (slower than RapidAPI).
+- Inputs are passed as **query parameters**.
+- Requires `APIFY_TOKEN` in SUTRA `.env`.
+
+### Environment variables (SUTRA `.env`)
+```
+APIFY_TOKEN=<YOUR_APIFY_TOKEN>
+FACEBOOK_PAGE_ACTOR=4Hv5RhChiaDk6iwad
+```
+
+Server base "URL" (example):
+```
+http://localhost:8000
+```
+
+### 1. Profile Details (Apify)
+Fetch Facebook profile/page details.
+
+**Endpoint**
+```
+GET {URL}/FB_apify/profile/profile
+```
+
+**Inputs**
+- `url` (required): Facebook profile/page URL
+
+**Example response**
+```
+{
+  "status": "success",
+  "data": {
+    "facebookUrl": "https://www.facebook.com/narendramodi",
+    "categories": [
+      "Page",
+      "Politician"
+    ],
+    "info": [
+      "Narendra Modi. 55,590,201 likes",
+      "12,949,013 talking about this. Prime Minister of India."
+    ],
+    "likes": 55590201,
+    "messenger": null,
+    "title": "Narendra Modi",
+    "pageId": "100044527235621",
+    "pageName": "narendramodi",
+    "pageUrl": "https://www.facebook.com/narendramodi",
+    "intro": "Prime Minister of India.",
+    "websites": [
+      "https://youtube.com/@narendramodi",
+      "http://www.narendramodi.in/"
+    ],
+    "alternativeSocialMedia": "https://youtube.com/@narendramodi",
+    "website": "http://www.narendramodi.in/",
+    "followers": 55590202,
+    "followings": 0,
+    "profilePictureUrl": "https://scontent-msp1-1.xx.fbcdn.net/v/t39.30808-1/459337720_1303104714517091_2841079786125894817_n.jpg?stp=dst-jpg_s200x200_tt6&_nc_cat=1&ccb=1-7&_nc_sid=f907e8&_nc_ohc=gpaAhpb1Q8cQ7kNvwHCMDXg&_nc_oc=AdqW60bW2VKG8mZK1JgMs1zjB1hzXtq0sERhz86eGAmujN2HitJkSJWAIm7CqkNKCoI&_nc_zt=24&_nc_ht=scontent-msp1-1.xx&_nc_gid=vz3LXVG8RMXUpwhpdXPc3w&_nc_ss=7a389&oh=00_Af2jh8ZyxdYS9M-kNbgwnAS-AKxvzGq8p-TzQm0PTT2amA&oe=69E4EFDE",
+    "coverPhotoUrl": "https://scontent-msp1-1.xx.fbcdn.net/v/t39.30808-6/573634163_1626580965502796_839119417535673119_n.png?_nc_cat=1&ccb=1-7&_nc_sid=2a1932&_nc_ohc=lQB0w7GslawQ7kNvwHdDDRG&_nc_oc=Adq6q7RPUdpg2RwmGIbCzeWbKFnjZjfXLuAT5nFW0_dFCnFiEPBlQS1EuS4EFMe5JTQ&_nc_zt=23&_nc_ht=scontent-msp1-1.xx&_nc_gid=rKQwpFQIrgIdTj4LOQUZBg&_nc_ss=7a389&oh=00_Af0gQJFXhZai5gxEdTOCK8SToXTPPVe0Ybg85nQtzSQ3pA&oe=69E4E87A",
+    "profilePhoto": "https://www.facebook.com/photo/?fbid=1303104711183758&set=a.538824284278475",
+    "category": "Politician",
+    "youtube": [
+      {
+        "username": "https://youtube.com/narendramodi",
+        "url": "https://youtube.com/@narendramodi"
+      }
+    ],
+    "creation_date": "May 5, 2009",
+    "ad_status": "This Page isn't currently running ads.",
+    "facebookId": "100044527235621",
+    "pageAdLibrary": {
+      "id": "177526890164",
+      "pamv_comms_data": null
+    }
+  }
+}
+```
+
+---
+
+### 2. Get Profile ID (Apify)
+Get the `facebookId` from a Facebook profile/page URL.
+
+**Endpoint**
+```
+GET {URL}/FB_apify/profile/get_profile_id
+```
+
+**Inputs**
+- `url` (required): Facebook profile/page URL
+
+**Example response**
+```
+{
+  "facebookId": "100044527235621"
+}
+```
+
+---
+
+### 3. Get All Posts (Apify)
+Fetch recent posts for a profile/page.
+
+**Endpoint**
+```
+GET {URL}/FB_apify/profile/posts/all
+```
+
+**Inputs**
+- `url` (required): Facebook profile/page URL
+- `resultsLimit` (optional, int): default `10`
+
+**Example response**
+```
+[
+  {
+    "facebookUrl": "https://www.facebook.com/p/The-Label-Jenn-100084236786813/",
+    "postId": "955713720579845",
+    "pageName": "p",
+    "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02DQ8mxxirEoi1MLLvvNQ3Av9hLBmM3xcpg86WuYP2jFNmKzpBtLq9F1XsWBrMZT1Xl&id=100084236786813",
+    "time": "2026-04-15T16:05:55.000Z",
+    "timestamp": 1776269155,
+    "user": {
+      "id": "100084236786813",
+      "name": "The Label Jenn",
+      "profileUrl": "https://www.facebook.com/100084236786813",
+      "profilePic": "https://scontent-atl3-1.xx.fbcdn.net/v/t39.30808-1/298514810_107577528727687_2550087521856375265_n.jpg?stp=cp0_dst-jpg_s50x50_tt6&_nc_cat=106&ccb=1-7&_nc_sid=2d3e12&_nc_ohc=B7JvS3tx0J4Q7kNvwFh_82T&_nc_oc=Ado6_1zVeHCHnGFk4YJgNv5P_v64it5Pqq5TL4TWZvTtc8Y2sK9_oQiFimiICxxWH9w&_nc_zt=24&_nc_ht=scontent-atl3-1.xx&_nc_gid=8o9p3odBinwtk-rGO1bi4Q&_nc_ss=7a389&oh=00_Af3Lv4ydQUThGmZkOKFGWnzJj4dTchX_wSDKmKoRSWm22Q&oe=69E67203"
+    },
+    "collaborators": [],
+    "text": "Muscle drape,textured fall and a statement fit // April2026 - Signature drape pants",
+    "likes": 0,
+    "shares": 0,
+    "topReactionsCount": 0,
+    "media": [
+      {
+        "mediaset_token": "pcb.955713720579845",
+        "url": "https://www.facebook.com/permalink.php?story_fbid=pfbid02DQ8mxxirEoi1MLLvvNQ3Av9hLBmM3xcpg86WuYP2jFNmKzpBtLq9F1XsWBrMZT1Xl&id=100084236786813",
+        "comet_product_tag_feed_overlay_renderer": null
+      },
+      {
+        "thumbnail": "https://scontent-atl3-2.xx.fbcdn.net/v/t51.82787-15/670867972_18111566821833192_8578014998912072662_n.jpg?stp=dst-jpg_s590x590_tt6&_nc_cat=105&ccb=1-7&_nc_sid=13d280&_nc_ohc=QBd-xN6ucawQ7kNvwHIgYlu&_nc_oc=AdrZmjFH6ZsoRhvz6ZpiLBfTIYvUwPkfW2-mGh_sdYCM1fr9wKvVzbpfJvHey3vQP3A&_nc_zt=23&_nc_ht=scontent-atl3-2.xx&_nc_gid=8o9p3odBinwtk-rGO1bi4Q&_nc_ss=7a389&oh=00_Af3VaI7tGB2thRHjL08cUhTP2wOnITLv64E5Wh6yNjIUCw&oe=69E66C69",
+        "__typename": "Photo",
+        "is_playable": false,
+        "image": {
+          "uri": "https://scontent-atl3-2.xx.fbcdn.net/v/t51.82787-15/670867972_18111566821833192_8578014998912072662_n.jpg?stp=dst-jpg_s590x590_tt6&_nc_cat=105&ccb=1-7&_nc_sid=13d280&_nc_ohc=QBd-xN6ucawQ7kNvwHIgYlu&_nc_oc=AdrZmjFH6ZsoRhvz6ZpiLBfTIYvUwPkfW2-mGh_sdYCM1fr9wKvVzbpfJvHey3vQP3A&_nc_zt=23&_nc_ht=scontent-atl3-2.xx&_nc_gid=8o9p3odBinwtk-rGO1bi4Q&_nc_ss=7a389&oh=00_Af3VaI7tGB2thRHjL08cUhTP2wOnITLv64E5Wh6yNjIUCw&oe=69E66C69",
+          "height": 590,
+          "width": 443
+        },
+        "id": "955713677246516",
+        "__isMedia": "Photo",
+        "photo_cix_screen": null,
+        "copyright_banner_info": null,
+        "owner": {
+          "__typename": "User",
+          "id": "100084236786813"
+        },
+        "ocrText": "No photo description available."
+      },
+  
+    ],
+    "feedbackId": "ZmVlZGJhY2s6OTU0OTMzMTAzOTkxMjQw",
+    "topLevelUrl": "https://www.facebook.com/100084236786813/posts/954933103991240",
+    "facebookId": "100084236786813",
+    "pageAdLibrary": {
+      "id": "107575558727884",
+      "pamv_comms_data": null
+    },
+    "inputUrl": "https://www.facebook.com/p/The-Label-Jenn-100084236786813/"
+  }
+]
+```
+
+---
+
+### 4. Post Comments (Apify)
+Fetch comments for a specific post URL.
+
+**Endpoint**
+```
+GET {URL}/FB_apify/comments/post_comments
+```
+
+**Inputs**
+- `post_url` (required): Facebook post URL
+- `includeNestedComments` (optional, bool): default `false`
+- `resultsLimit` (optional, int): default `10`
+- `viewOption` (optional, str): default `RANKED_UNFILTERED`
+
+**Example response**
+```
+[
+  {
+    "facebookUrl": "https://www.facebook.com/narendramodi/posts/pfbid0TNN7bJimZrcE8zzzT1dJktrdC6y6AJKJDKmucJQioC2EWA75nzBm54RorMZ4SicHl",
+    "commentUrl": "https://www.facebook.com/narendramodi/posts/pfbid02WjrJDL5PbYoYfn2KwmzgKaLeMmfiaBp6fGWBfFczWqk7G9a8UMYHsHGu6p2KwQowl?comment_id=1762203608483871",
+    "commentId": "1762203608483871",
+    "id": "Y29tbWVudDoxNzU1MDMwODUyNjU3ODA2XzE3NjIyMDM2MDg0ODM4NzE=",
+    "feedbackId": "ZmVlZGJhY2s6MTc1NTAzMDg1MjY1NzgwNl8xNzYyMjAzNjA4NDgzODcx",
+    "date": "2026-04-15T11:01:33.000Z",
+    "text": "Our Hon'ble PM Shri Narendra Modiji today shared pictures from his visit to the Sri Adichunchanagiri Mahasamsthana Math. During the visit, he went to the Jwala Peetha and offered prayers at the Sri Kalabhairava Temple, seeking divine blessings for the peace, prosperity and well-being of the nation.🙏🙏",
+    "profileUrl": "https://www.facebook.com/rakesh.kalia.142",
+    "profilePicture": "https://scontent-xxc1-1.xx.fbcdn.net/v/t1.6435-1/44677346_1893119557410053_1759918847319605248_n.jpg?stp=cp0_dst-jpg_s32x32_tt6&_nc_cat=104&ccb=1-7&_nc_sid=e99d92&_nc_ohc=ErnV-1Ucq-YQ7kNvwGDvRZh&_nc_oc=AdoqjuoUP1i9IGSvug8HzD9xjMjRcy1paUMBq902U63osn-Fa__TFPMqbOs2NkiPA_8&_nc_zt=24&_nc_ht=scontent-xxc1-1.xx&_nc_gid=5tj62N-C7_qDgkPJL_fLyA&_nc_ss=7a389&oh=00_Af3KxVJtQqW_ms-wSvR5zNMK9L5U6VuP1pylkQ2oToiiBg&oe=6A07F953",
+    "profileId": "pfbid02YL8fFMBrE5VyX3WTuGVJc9KAKaZWF3Aeoee6xLNk9Lv8rc8ewpM9oAUn1bt9QuM3l",
+    "profileName": "Rakesh Kalia",
+    "likesCount": "14",
+    "commentsCount": 1,
+    "comments": [],
+    "threadingDepth": 0,
+    "facebookId": "1755030852657806",
+    "postTitle": "At the Sri Adichunchanagiri Mahasamsthana Math, visited the Jwala Peetha and prayed at Sri Kalabhairava Temple.",
+    "pageAdLibrary": {
+      "is_business_page_active": false,
+      "id": "177526890164"
+    },
+    "inputUrl": "https://www.facebook.com/narendramodi/posts/pfbid0TNN7bJimZrcE8zzzT1dJktrdC6y6AJKJDKmucJQioC2EWA75nzBm54RorMZ4SicHl"
+  },
+
+]
+```
+
+---
+
+### 5. Followers / Following (Apify)
+Fetch followers/followings list for a profile/page URL.
+
+**Endpoint**
+```
+GET {URL}/FB_apify/follow/followers_followings
+```
+
+**Inputs**
+- `profile_url` (required): Facebook profile/page URL
+- `resultsLimit` (optional, int): default `10`
+
+**Example response**
+```
+[
+  {
+    "facebookUrl": "https://www.facebook.com/p/The-Label-Jenn-100084236786813/",
+    "followType": "follower",
+    "id": "100044312295290",
+    "image": "https://scontent-lga3-3.xx.fbcdn.net/v/t39.30808-1/557282842_1387587412728322_7417138558890258053_n.jpg?stp=cp0_dst-jpg_s80x80_tt6&_nc_cat=104&ccb=1-7&_nc_sid=167101&_nc_ohc=okJmZcYBGoEQ7kNvwGic5p6&_nc_oc=AdoQ-aPaGGTXdHx8A0xZIRCZgStXRyVlSYfdSTj5Orvp3j82yQdHHQlfd1g18ejRLbE&_nc_zt=24&_nc_ht=scontent-lga3-3.xx&_nc_gid=UHSiUVKsuJ6_ApM5-CMfSQ&_nc_ss=7a389&oh=00_Af0jxs9C9GYV5xcXCtSkepUA6UgrJpRq6Q9jkG8nLGKq2w&oe=69E655F4",
+    "title": "Mirchi Manali",
+    "subtitle_text": "",
+    "url": "https://www.facebook.com/rjmanali.fanpage",
+    "privacy_scope": null,
+    "__typename": "User",
+    "__isEntity": "User",
+    "facebookId": "100084236786813",
+    "navSections": [
+      {
+        "id": "YXBwX2NvbGxlY3Rpb246cGZiaWQwSkFhQzlDaG1odjc2dEdaVnpUVkRrTWV4RWVpWWFnbTFrcHFrRHlKU2dlWjhhYjNFbmUxTlZuUW56UGV3U3pLS1ZXU01TQ1ZvQ3NGMVlwQkVuWWF1Zzg4YlNjaTllbA==",
+        "name": "Followers",
+        "url": "https://www.facebook.com/people/The-Label-Jenn/100084236786813/?sk=followers"
+      }
+    ],
+    "pageAdLibrary": {
+      "is_business_page_active": false,
+      "id": "107575558727884"
+    },
+    "followersId": "YXBwX2NvbGxlY3Rpb246cGZiaWQwSkFhQzlDaG1odjc2dEdaVnpUVkRrTWV4RWVpWWFnbTFrcHFrRHlKU2dlWjhhYjNFbmUxTlZuUW56UGV3U3pLS1ZXU01TQ1ZvQ3NGMVlwQkVuWWF1Zzg4YlNjaTllbA==",
+    "inputUrl": "https://www.facebook.com/p/The-Label-Jenn-100084236786813/"
+  },
+  {
+    "facebookUrl": "https://www.facebook.com/p/The-Label-Jenn-100084236786813/",
+    "followType": "follower",
+    "id": "100063836663636",
+    "image": "https://scontent-lga3-2.xx.fbcdn.net/v/t39.30808-1/300524571_467941092010442_6585022432526833542_n.jpg?stp=cp0_dst-jpg_s80x80_tt6&_nc_cat=105&ccb=1-7&_nc_sid=167101&_nc_ohc=DCyNT5bQTvoQ7kNvwENc1Gp&_nc_oc=AdpPW4xqYcMHoGVgYAWV5s0PYExZNExwMq1ZwtVWLUCwzTjpaZm40kGyFXT7_Cq5Rek&_nc_zt=24&_nc_ht=scontent-lga3-2.xx&_nc_gid=UHSiUVKsuJ6_ApM5-CMfSQ&_nc_ss=7a389&oh=00_Af3JYdG3aFvHKnmvY4d1iQDJS3pUE0xxa3dceY_W77t3cg&oe=69E65686",
+    "title": "Kareem Western Tack",
+    "subtitle_text": "",
+    "url": "https://www.facebook.com/people/Kareem-Western-Tack/100063836663636/",
+    "privacy_scope": null,
+    "__typename": "User",
+    "__isEntity": "User",
+    "facebookId": "100084236786813",
+    "navSections": [
+      {
+        "id": "YXBwX2NvbGxlY3Rpb246cGZiaWQwSkFhQzlDaG1odjc2dEdaVnpUVkRrTWV4RWVpWWFnbTFrcHFrRHlKU2dlWjhhYjNFbmUxTlZuUW56UGV3U3pLS1ZXU01TQ1ZvQ3NGMVlwQkVuWWF1Zzg4YlNjaTllbA==",
+        "name": "Followers",
+        "url": "https://www.facebook.com/people/The-Label-Jenn/100084236786813/?sk=followers"
+      }
+    ],
+    "pageAdLibrary": {
+      "is_business_page_active": false,
+      "id": "107575558727884"
+    },
+    "followersId": "YXBwX2NvbGxlY3Rpb246cGZiaWQwSkFhQzlDaG1odjc2dEdaVnpUVkRrTWV4RWVpWWFnbTFrcHFrRHlKU2dlWjhhYjNFbmUxTlZuUW56UGV3U3pLS1ZXU01TQ1ZvQ3NGMVlwQkVuWWF1Zzg4YlNjaTllbA==",
+    "inputUrl": "https://www.facebook.com/p/The-Label-Jenn-100084236786813/"
+  },
+
+  {
+    "url": "https://www.facebook.com/p/The-Label-Jenn-100084236786813/",
+    "error": "no_items",
+    "errorDescription": "Empty or private data for provided input"
+  }
+]
+```
